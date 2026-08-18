@@ -71,8 +71,13 @@ async function submitEmployer() {
       <div class="jb-blob" style="width: 320px; height: 320px; bottom: -100px; right: -60px; background: #0EA5A4; animation-delay: -5s;" />
     </div>
 
-    <v-card class="jb-glass tw:w-full" max-width="460" style="position: relative; z-index: 1;" rounded="lg">
-      <v-card-text class="tw:p-8">
+    <v-card
+      class="jb-glass tw:w-full"
+      max-width="460"
+      style="position: relative; z-index: 1; box-shadow: var(--jb-shadow-lift);"
+      rounded="lg"
+    >
+      <v-card-text class="tw:p-8 tw:md:p-10">
         <div class="tw:text-center tw:mb-6">
           <h1 class="tw:text-2xl tw:font-bold" style="color:#1E1B4B">Welcome back</h1>
           <p class="tw:text-sm tw:mt-1" style="color: rgba(30,27,75,0.65)">Log in to continue to JobBoard</p>
@@ -107,7 +112,7 @@ async function submitEmployer() {
                 :rules="[required('Password')]"
                 @click:append-inner="showClientPassword = !showClientPassword"
               />
-              <v-btn type="submit" color="primary" size="large" block :loading="loading" class="tw:mt-2">
+              <v-btn type="submit" color="primary" size="large" block :loading="loading" class="jb-btn-gradient tw:mt-4">
                 Log In
               </v-btn>
             </v-form>
@@ -132,7 +137,7 @@ async function submitEmployer() {
                 :rules="[required('Password')]"
                 @click:append-inner="showEmployerPassword = !showEmployerPassword"
               />
-              <v-btn type="submit" color="primary" size="large" block :loading="loading" class="tw:mt-2">
+              <v-btn type="submit" color="primary" size="large" block :loading="loading" class="jb-btn-gradient tw:mt-4">
                 Log In
               </v-btn>
             </v-form>

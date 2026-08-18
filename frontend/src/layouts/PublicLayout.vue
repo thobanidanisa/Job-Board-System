@@ -28,7 +28,7 @@ function handleLogout() {
 
 <template>
   <v-app>
-    <v-app-bar flat color="surface" class="jb-glass" style="border-bottom: 1px solid rgba(226,232,240,0.8)">
+    <v-app-bar flat color="surface" class="jb-glass" style="box-shadow: 0 1px 0 rgba(226,232,240,0.9), 0 12px 24px -16px rgba(15,23,42,0.15);">
       <v-container class="tw:flex tw:items-center tw:py-0" style="max-width: 1200px">
         <router-link to="/" class="tw:flex tw:items-center tw:gap-2 tw:no-underline">
           <BrandMark />
@@ -59,7 +59,7 @@ function handleLogout() {
           </template>
           <template v-else>
             <v-btn to="/login" variant="text" class="tw:mr-2">Login</v-btn>
-            <v-btn to="/register" color="primary" variant="flat">Create Account</v-btn>
+            <v-btn to="/register" color="primary" variant="flat" class="jb-btn-gradient">Create Account</v-btn>
           </template>
         </template>
 

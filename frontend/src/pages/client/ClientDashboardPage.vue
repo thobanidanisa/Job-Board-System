@@ -13,9 +13,9 @@ const memberSince = computed(() => {
 })
 
 const stats = [
-  { label: 'Applications Submitted', value: '0', icon: 'mdi-file-document-outline', color: 'primary' },
-  { label: 'Interviews Scheduled', value: '0', icon: 'mdi-calendar-clock-outline', color: 'secondary' },
-  { label: 'Saved Jobs', value: '0', icon: 'mdi-bookmark-outline', color: 'accent' },
+  { label: 'Applications Submitted', value: '0', icon: 'mdi-file-document-outline', badge: 'primary' },
+  { label: 'Interviews Scheduled', value: '0', icon: 'mdi-calendar-clock-outline', badge: 'secondary' },
+  { label: 'Saved Jobs', value: '0', icon: 'mdi-bookmark-outline', badge: 'accent' },
 ]
 
 const profileFields = computed(() => [
@@ -27,8 +27,8 @@ const profileFields = computed(() => [
 </script>
 
 <template>
-  <v-container class="tw:py-8" style="max-width: 1200px">
-    <div class="tw:flex tw:flex-col tw:md:flex-row tw:md:items-center tw:md:justify-between tw:gap-3 tw:mb-8">
+  <v-container class="tw:py-10" style="max-width: 1200px">
+    <div class="tw:flex tw:flex-col tw:md:flex-row tw:md:items-center tw:md:justify-between tw:gap-4 tw:mb-10">
       <div>
         <h1 class="tw:text-2xl tw:font-bold" style="color:#1E1B4B">
           Welcome back, {{ auth.user?.name }}
@@ -42,12 +42,12 @@ const profileFields = computed(() => [
 
     <v-row>
       <v-col v-for="stat in stats" :key="stat.label" cols="12" sm="4">
-        <TiltCard :max-tilt="4">
-          <v-card class="tw:p-4" variant="flat" style="border: 1px solid rgba(226,232,240,0.9)">
+        <TiltCard :max-tilt="4" :glow="stat.badge === 'accent' ? 'primary' : stat.badge">
+          <v-card class="tw:pa-5" elevation="0">
             <div class="tw:flex tw:items-center tw:gap-4">
-              <v-avatar :color="stat.color" variant="tonal" size="52">
-                <v-icon :icon="stat.icon" size="26" />
-              </v-avatar>
+              <div class="jb-badge" :class="`jb-badge--${stat.badge}`" style="width: 52px; height: 52px;">
+                <v-icon :icon="stat.icon" size="24" />
+              </div>
               <div>
                 <div class="tw:text-2xl tw:font-bold" style="color:#1E1B4B">{{ stat.value }}</div>
                 <div class="tw:text-sm" style="color: rgba(30,27,75,0.6)">{{ stat.label }}</div>
@@ -58,48 +58,44 @@ const profileFields = computed(() => [
       </v-col>
     </v-row>
 
-    <v-row class="tw:mt-2">
+    <v-row class="tw:mt-6">
       <v-col cols="12" md="7">
-        <v-card class="tw:p-1" variant="flat" style="border: 1px solid rgba(226,232,240,0.9)">
-          <v-card-item>
-            <v-card-title class="tw:font-semibold" style="color:#1E1B4B">What's next</v-card-title>
-          </v-card-item>
-          <v-card-text>
-            <v-row>
-              <v-col cols="12" sm="6">
-                <v-card class="tw:p-4" variant="tonal" color="primary">
-                  <v-icon icon="mdi-briefcase-search-outline" size="28" class="tw:mb-2" />
-                  <div class="tw:font-semibold">Search Jobs</div>
-                  <div class="tw:text-sm tw:mt-1" style="opacity: 0.85">Browse and filter open roles.</div>
-                  <v-chip size="x-small" class="tw:mt-3" variant="flat">Coming soon</v-chip>
-                </v-card>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-card class="tw:p-4" variant="tonal" color="secondary">
-                  <v-icon icon="mdi-file-document-check-outline" size="28" class="tw:mb-2" />
-                  <div class="tw:font-semibold">Track Applications</div>
-                  <div class="tw:text-sm tw:mt-1" style="opacity: 0.85">Follow every application's status.</div>
-                  <v-chip size="x-small" class="tw:mt-3" variant="flat">Coming soon</v-chip>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
+        <div class="jb-card tw:pa-6 tw:h-full">
+          <div class="tw:font-semibold tw:text-lg tw:mb-5" style="color:#1E1B4B">What's next</div>
+          <v-row>
+            <v-col cols="12" sm="6">
+              <div class="jb-card jb-card--hoverable tw:pa-5" style="background: var(--jb-grad-primary); color: #fff; border: none;">
+                <v-icon icon="mdi-briefcase-search-outline" size="28" class="tw:mb-3" />
+                <div class="tw:font-semibold">Search Jobs</div>
+                <div class="tw:text-sm tw:mt-1" style="opacity: 0.85">Browse and filter open roles.</div>
+                <v-chip size="x-small" class="tw:mt-4" variant="flat">Coming soon</v-chip>
+              </div>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <div class="jb-card jb-card--hoverable tw:pa-5" style="background: var(--jb-grad-secondary); color: #fff; border: none;">
+                <v-icon icon="mdi-file-document-check-outline" size="28" class="tw:mb-3" />
+                <div class="tw:font-semibold">Track Applications</div>
+                <div class="tw:text-sm tw:mt-1" style="opacity: 0.85">Follow every application's status.</div>
+                <v-chip size="x-small" class="tw:mt-4" variant="flat">Coming soon</v-chip>
+              </div>
+            </v-col>
+          </v-row>
+        </div>
       </v-col>
 
       <v-col cols="12" md="5">
-        <v-card class="tw:p-1" variant="flat" style="border: 1px solid rgba(226,232,240,0.9)">
-          <v-card-item>
-            <v-card-title class="tw:font-semibold" style="color:#1E1B4B">Your Details</v-card-title>
-          </v-card-item>
-          <v-list bg-color="transparent">
+        <div class="jb-card tw:h-full">
+          <div class="tw:font-semibold tw:text-lg tw:pa-6 tw:pb-2" style="color:#1E1B4B">Your Details</div>
+          <v-list bg-color="transparent" class="tw:pb-4">
             <v-list-item v-for="field in profileFields" :key="field.label" :title="field.value || '-'" :subtitle="field.label">
               <template #prepend>
-                <v-icon :icon="field.icon" color="primary" />
+                <div class="jb-badge jb-badge--primary tw:mr-2" style="width: 36px; height: 36px;">
+                  <v-icon :icon="field.icon" size="18" />
+                </div>
               </template>
             </v-list-item>
           </v-list>
-        </v-card>
+        </div>
       </v-col>
     </v-row>
   </v-container>

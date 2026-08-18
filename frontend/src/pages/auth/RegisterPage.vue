@@ -141,8 +141,13 @@ async function submitEmployer() {
       <div class="jb-blob" style="width: 340px; height: 340px; bottom: -120px; left: -70px; background: #4F46E5; animation-delay: -5s;" />
     </div>
 
-    <v-card class="jb-glass tw:w-full" max-width="640" style="position: relative; z-index: 1;" rounded="lg">
-      <v-card-text class="tw:p-8">
+    <v-card
+      class="jb-glass tw:w-full"
+      max-width="640"
+      style="position: relative; z-index: 1; box-shadow: var(--jb-shadow-lift);"
+      rounded="lg"
+    >
+      <v-card-text class="tw:p-8 tw:md:p-10">
         <div class="tw:text-center tw:mb-6">
           <h1 class="tw:text-2xl tw:font-bold" style="color:#1E1B4B">Create your account</h1>
           <p class="tw:text-sm tw:mt-1" style="color: rgba(30,27,75,0.65)">It only takes a couple of minutes</p>
@@ -161,7 +166,7 @@ async function submitEmployer() {
             </v-alert>
 
             <v-form ref="clientForm" @submit.prevent="submitClient">
-              <v-row dense>
+              <v-row>
                 <v-col cols="12" sm="6">
                   <v-text-field v-model="clientModel.name" label="Name" :rules="[required('Name')]" />
                 </v-col>
@@ -274,7 +279,7 @@ async function submitEmployer() {
                 </v-col>
               </v-row>
 
-              <v-btn type="submit" color="primary" size="large" block :loading="clientLoading" class="tw:mt-2">
+              <v-btn type="submit" color="primary" size="large" block :loading="clientLoading" class="jb-btn-gradient tw:mt-4">
                 Create Job Seeker Account
               </v-btn>
             </v-form>
@@ -287,7 +292,7 @@ async function submitEmployer() {
             </v-alert>
 
             <v-form ref="employerForm" @submit.prevent="submitEmployer">
-              <v-row dense>
+              <v-row>
                 <v-col cols="12" sm="6">
                   <v-text-field v-model="employerModel.companyName" label="Company Name" :rules="[required('Company name')]" />
                 </v-col>
@@ -397,7 +402,7 @@ async function submitEmployer() {
                 </v-col>
               </v-row>
 
-              <v-btn type="submit" color="primary" size="large" block :loading="employerLoading" class="tw:mt-2">
+              <v-btn type="submit" color="primary" size="large" block :loading="employerLoading" class="jb-btn-gradient tw:mt-4">
                 Create Employer Account
               </v-btn>
             </v-form>

@@ -28,7 +28,7 @@ function handleLogout() {
 
 <template>
   <v-app>
-    <v-app-bar flat color="surface" style="border-bottom: 1px solid rgba(226,232,240,0.8)">
+    <v-app-bar flat color="surface" style="box-shadow: 0 1px 0 rgba(226,232,240,0.9), 0 12px 24px -16px rgba(15,23,42,0.15);">
       <v-app-bar-nav-icon @click="drawer = !drawer" />
       <router-link to="/client/dashboard" class="tw:no-underline tw:ml-1">
         <BrandMark size="small" />

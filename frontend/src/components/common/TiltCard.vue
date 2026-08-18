@@ -3,27 +3,45 @@
 // perspective rotation, with the inner content lifted on the Z axis. Used
 // by feature/stat cards across the public and dashboard pages so the
 // "3D" effect has exactly one implementation.
-import { ref } from 'vue'
+//
+// `baseTiltX`/`baseTiltY` give the card a persistent resting tilt (rather
+// than only reacting on hover) so it still reads as "3D" in a static
+// screenshot, not just during interaction.
+import { computed, ref } from 'vue'
 
-defineProps({
+const props = defineProps({
   maxTilt: { type: Number, default: 8 },
+  baseTiltX: { type: Number, default: 0 },
+  baseTiltY: { type: Number, default: 0 },
+  glow: { type: String, default: 'none' }, // 'none' | 'primary' | 'secondary'
 })
 
 const el = ref(null)
-const rotateX = ref(0)
-const rotateY = ref(0)
+const hoverX = ref(0)
+const hoverY = ref(0)
+const hovering = ref(false)
 
-function handleMouseMove(event, maxTilt) {
+const rotateX = computed(() => props.baseTiltX + hoverX.value)
+const rotateY = computed(() => props.baseTiltY + hoverY.value)
+
+const glowClass = computed(() => (props.glow !== 'none' && hovering.value ? `jb-tilt--glow-${props.glow}` : ''))
+
+function handleMouseMove(event) {
   const rect = el.value.getBoundingClientRect()
   const px = (event.clientX - rect.left) / rect.width
   const py = (event.clientY - rect.top) / rect.height
-  rotateY.value = (px - 0.5) * maxTilt * 2
-  rotateX.value = (0.5 - py) * maxTilt * 2
+  hoverY.value = (px - 0.5) * props.maxTilt * 2
+  hoverX.value = (0.5 - py) * props.maxTilt * 2
+}
+
+function handleEnter() {
+  hovering.value = true
 }
 
 function reset() {
-  rotateX.value = 0
-  rotateY.value = 0
+  hoverX.value = 0
+  hoverY.value = 0
+  hovering.value = false
 }
 </script>
 
@@ -31,11 +49,13 @@ function reset() {
   <div
     ref="el"
     class="jb-tilt"
+    :class="glowClass"
     :style="{
       transform: `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
       borderRadius: 'var(--jb-radius-lg)',
     }"
-    @mousemove="(e) => handleMouseMove(e, maxTilt)"
+    @mouseenter="handleEnter"
+    @mousemove="handleMouseMove"
     @mouseleave="reset"
   >
     <div class="jb-tilt__inner">

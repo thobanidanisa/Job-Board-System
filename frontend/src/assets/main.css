@@ -1,0 +1,75 @@
+/* Tailwind utilities are prefixed with "tw:" (e.g. tw:flex, tw:gap-4) so
+   they can never collide with Vuetify's own utility classes (rounded,
+   text-center, elevation-*, etc). See vite.config.js for the plugin setup. */
+@import "tailwindcss" prefix(tw);
+
+:root {
+  --jb-radius-lg: 20px;
+  --jb-radius-md: 14px;
+  --jb-shadow-soft: 0 8px 30px rgba(15, 23, 42, 0.08);
+  --jb-shadow-lift: 0 20px 45px rgba(15, 23, 42, 0.16);
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-feature-settings: 'liga' 1, 'kern' 1;
+}
+
+/* ------------------------------------------------------------------
+   3D-tilt card system (used by TiltCard.vue)
+   ------------------------------------------------------------------ */
+.jb-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+  will-change: transform;
+  box-shadow: var(--jb-shadow-soft);
+}
+
+.jb-tilt:hover,
+.jb-tilt:focus-within {
+  box-shadow: var(--jb-shadow-lift);
+}
+
+.jb-tilt__inner {
+  transform: translateZ(28px);
+}
+
+/* ------------------------------------------------------------------
+   Gradient blob backdrops for the hero / auth split panel
+   ------------------------------------------------------------------ */
+.jb-blob-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.jb-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.55;
+  animation: jb-float 14s ease-in-out infinite;
+}
+
+@keyframes jb-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-3%, 4%) scale(1.08); }
+}
+
+/* ------------------------------------------------------------------
+   Glass surface used on top of gradient/blob backgrounds
+   ------------------------------------------------------------------ */
+.jb-glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}

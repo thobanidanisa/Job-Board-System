@@ -8,6 +8,7 @@ const errorHandler = require('./middleware/errorHandler');
 
 const clientAuthRoutes = require('./routes/clientAuthRoutes');
 const employerAuthRoutes = require('./routes/employerAuthRoutes');
+const lookupRoutes = require('./routes/lookupRoutes');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.get('/api/health', (req, res) => {
    --------------------------------------------------------------- */
 app.use('/api/clients/auth', clientAuthRoutes);
 app.use('/api/employers/auth', employerAuthRoutes);
+app.use('/api/lookups', lookupRoutes);
 
 /* ---------------------------------------------------------------
    404 handler - must come after all real routes

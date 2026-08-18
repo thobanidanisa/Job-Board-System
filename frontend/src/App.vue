@@ -1,11 +1,21 @@
-<script setup></script>
+<script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import PublicLayout from '@/layouts/PublicLayout.vue'
+import ClientLayout from '@/layouts/ClientLayout.vue'
+import EmployerLayout from '@/layouts/EmployerLayout.vue'
+
+const route = useRoute()
+
+const layouts = {
+  public: PublicLayout,
+  client: ClientLayout,
+  employer: EmployerLayout,
+}
+
+const activeLayout = computed(() => layouts[route.meta.layout] || PublicLayout)
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <component :is="activeLayout" />
 </template>
-
-<style scoped></style>

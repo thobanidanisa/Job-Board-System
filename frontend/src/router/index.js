@@ -1,0 +1,69 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: () => import('@/pages/HomePage.vue'),
+    meta: { layout: 'public' },
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/pages/auth/LoginPage.vue'),
+    meta: { layout: 'public', guestOnly: true },
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/pages/auth/RegisterPage.vue'),
+    meta: { layout: 'public', guestOnly: true },
+  },
+  {
+    path: '/client/dashboard',
+    name: 'client-dashboard',
+    component: () => import('@/pages/client/ClientDashboardPage.vue'),
+    meta: { layout: 'client', requiresAuth: true, role: 'client' },
+  },
+  {
+    path: '/employer/dashboard',
+    name: 'employer-dashboard',
+    component: () => import('@/pages/employer/EmployerDashboardPage.vue'),
+    meta: { layout: 'employer', requiresAuth: true, role: 'employer' },
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('@/pages/NotFoundPage.vue'),
+    meta: { layout: 'public' },
+  },
+]
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes,
+  scrollBehavior() {
+    return { top: 0 }
+  },
+})
+
+router.beforeEach((to) => {
+  const auth = useAuthStore()
+
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    return { name: 'login', query: { redirect: to.fullPath } }
+  }
+
+  if (to.meta.role && auth.role !== to.meta.role) {
+    return { name: 'home' }
+  }
+
+  if (to.meta.guestOnly && auth.isAuthenticated) {
+    return { path: auth.dashboardPath }
+  }
+
+  return true
+})
+
+export default router

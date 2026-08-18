@@ -10,4 +10,11 @@ async function provinceExists(provinceId) {
   return rows.length > 0;
 }
 
-module.exports = { provinceExists };
+async function getProvinces() {
+  const { rows } = await pool.query(
+    'SELECT province_id, province_name FROM provinces ORDER BY province_name'
+  );
+  return rows;
+}
+
+module.exports = { provinceExists, getProvinces };

@@ -9,6 +9,7 @@ const errorHandler = require('./middleware/errorHandler');
 const clientAuthRoutes = require('./routes/clientAuthRoutes');
 const employerAuthRoutes = require('./routes/employerAuthRoutes');
 const lookupRoutes = require('./routes/lookupRoutes');
+const jobRoutes = require('./routes/jobRoutes');
 // Forgot-password / OTP-via-email flow is paused for now - re-add
 // passwordResetRoutes here once that feature is picked back up.
 
@@ -39,6 +40,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/clients/auth', clientAuthRoutes);
 app.use('/api/employers/auth', employerAuthRoutes);
 app.use('/api/lookups', lookupRoutes);
+app.use('/api/jobs', jobRoutes);
 
 /* ---------------------------------------------------------------
    404 handler - must come after all real routes

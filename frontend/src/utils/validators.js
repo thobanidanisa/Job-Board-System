@@ -59,3 +59,15 @@ export const matchesPassword = (getPassword) => (value) => {
 export const isChecked = (label = 'This') => (value) => {
   return value === true || `${label} is required`
 }
+
+export const isNonNegativeNumber = (value) => {
+  if (value === null || value === undefined || value === '') return true
+  return (Number.isFinite(Number(value)) && Number(value) >= 0) || 'Must be a non-negative number'
+}
+
+// Factory: build an "end date must be on/after start date" rule bound to
+// a getter for the current start-date value.
+export const isOnOrAfter = (getStartDate, label = 'End date') => (value) => {
+  if (!value || !getStartDate()) return true
+  return new Date(value) >= new Date(getStartDate()) || `${label} must be on or after the start date`
+}

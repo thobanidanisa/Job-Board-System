@@ -11,4 +11,13 @@ const listProvinces = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { listProvinces };
+const listCategories = asyncHandler(async (req, res) => {
+  try {
+    const { data } = await apiClient.get('/lookups/categories');
+    res.status(200).json(data);
+  } catch (error) {
+    throw forwardApiError(error);
+  }
+});
+
+module.exports = { listProvinces, listCategories };

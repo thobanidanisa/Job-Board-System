@@ -17,4 +17,19 @@ async function getProvinces() {
   return rows;
 }
 
-module.exports = { provinceExists, getProvinces };
+async function categoryExists(categoryId) {
+  const { rows } = await pool.query(
+    'SELECT 1 FROM categories WHERE category_id = $1 AND is_active = TRUE',
+    [categoryId]
+  );
+  return rows.length > 0;
+}
+
+async function getCategories() {
+  const { rows } = await pool.query(
+    'SELECT category_id, category_name FROM categories WHERE is_active = TRUE ORDER BY category_name'
+  );
+  return rows;
+}
+
+module.exports = { provinceExists, getProvinces, categoryExists, getCategories };

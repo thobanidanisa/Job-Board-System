@@ -1,9 +1,15 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useJobsStore } from '@/stores/jobs'
 import TiltCard from '@/components/common/TiltCard.vue'
 
 const auth = useAuthStore()
+const jobsStore = useJobsStore()
+
+onMounted(() => {
+  jobsStore.fetchMyJobs()
+})
 
 const memberSince = computed(() => {
   if (!auth.user?.createdAt) return '-'
@@ -19,11 +25,11 @@ const verificationColor = computed(() => {
   return 'warning'
 })
 
-const stats = [
-  { label: 'Active Job Posts', value: '0', icon: 'mdi-briefcase-outline', badge: 'primary' },
+const stats = computed(() => [
+  { label: 'Active Job Posts', value: String(jobsStore.activeCount), icon: 'mdi-briefcase-outline', badge: 'primary' },
   { label: 'Applications Received', value: '0', icon: 'mdi-account-multiple-outline', badge: 'secondary' },
   { label: 'Interviews Scheduled', value: '0', icon: 'mdi-calendar-clock-outline', badge: 'accent' },
-]
+])
 
 const profileFields = computed(() => [
   { label: 'Login Email', value: auth.user?.email, icon: 'mdi-email-outline' },
@@ -83,12 +89,18 @@ const profileFields = computed(() => [
           <div class="tw:font-semibold tw:text-lg tw:mb-5" style="color:#1E1B4B">What's next</div>
           <v-row>
             <v-col cols="12" sm="6">
-              <div class="jb-card jb-card--hoverable tw:pa-5" style="background: var(--jb-grad-primary); color: #fff; border: none;">
+              <router-link
+                to="/employer/jobs/new"
+                class="jb-card jb-card--hoverable tw:pa-5 tw:block tw:no-underline"
+                style="background: var(--jb-grad-primary); color: #fff; border: none;"
+              >
                 <v-icon icon="mdi-briefcase-plus-outline" size="28" class="tw:mb-3" />
                 <div class="tw:font-semibold">Post a Job</div>
                 <div class="tw:text-sm tw:mt-1" style="opacity: 0.85">Publish a new role for candidates.</div>
-                <v-chip size="x-small" class="tw:mt-4" variant="flat">Coming soon</v-chip>
-              </div>
+                <v-chip size="x-small" class="tw:mt-4" variant="flat" color="white">
+                  <span style="color: #4338CA">Get started</span>
+                </v-chip>
+              </router-link>
             </v-col>
             <v-col cols="12" sm="6">
               <div class="jb-card jb-card--hoverable tw:pa-5" style="background: var(--jb-grad-secondary); color: #fff; border: none;">

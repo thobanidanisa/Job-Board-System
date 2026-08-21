@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+  <defs>
+    <linearGradient id="jb-logo-grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4F46E5" />
+      <stop offset="1" stop-color="#0EA5A4" />
+    </linearGradient>
+  </defs>
+  <rect width="40" height="40" rx="11" fill="url(#jb-logo-grad)" />
+  <path
+    d="M13 17.5C13 15.567 14.567 14 16.5 14H23.5C25.433 14 27 15.567 27 17.5V24.5C27 26.433 25.433 28 23.5 28H16.5C14.567 28 13 26.433 13 24.5V17.5Z"
+    fill="white"
+    fill-opacity="0.92"
+  />
+  <path d="M17 14V12.5C17 11.6716 17.6716 11 18.5 11H21.5C22.3284 11 23 11.6716 23 12.5V14" stroke="white" stroke-width="1.8" stroke-linecap="round" />
+  <path d="M13 20.5H27" stroke="#4F46E5" stroke-width="1.6" />
+</svg>

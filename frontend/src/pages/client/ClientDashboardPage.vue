@@ -43,7 +43,7 @@ const profileFields = computed(() => [
     <v-row>
       <v-col v-for="stat in stats" :key="stat.label" cols="12" sm="4">
         <TiltCard :max-tilt="4" :glow="stat.badge === 'accent' ? 'primary' : stat.badge">
-          <v-card class="tw:pa-5" elevation="0">
+          <v-card class="tw:pa-5 jb-card--glass" elevation="0">
             <div class="tw:flex tw:items-center tw:gap-4">
               <div class="jb-badge" :class="`jb-badge--${stat.badge}`" style="width: 52px; height: 52px;">
                 <v-icon :icon="stat.icon" size="24" />
@@ -60,7 +60,7 @@ const profileFields = computed(() => [
 
     <v-row class="tw:mt-6">
       <v-col cols="12" md="7">
-        <div class="jb-card tw:pa-6 tw:h-full">
+        <div class="jb-card jb-card--glass tw:pa-6 tw:h-full">
           <div class="tw:font-semibold tw:text-lg tw:mb-5" style="color:#1E1B4B">What's next</div>
           <v-row>
             <v-col cols="12" sm="6">
@@ -84,7 +84,7 @@ const profileFields = computed(() => [
       </v-col>
 
       <v-col cols="12" md="5">
-        <div class="jb-card tw:h-full">
+        <div class="jb-card jb-card--glass tw:h-full">
           <div class="tw:font-semibold tw:text-lg tw:pa-6 tw:pb-2" style="color:#1E1B4B">Your Details</div>
           <v-list bg-color="transparent" class="tw:pb-4">
             <v-list-item v-for="field in profileFields" :key="field.label" :title="field.value || '-'" :subtitle="field.label">

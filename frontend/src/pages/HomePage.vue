@@ -52,13 +52,7 @@ const employerSteps = [
 <template>
   <div>
     <!-- ================= HERO ================= -->
-    <section class="tw:relative tw:overflow-hidden" style="padding: 112px 0 140px;">
-      <div class="jb-blob-field">
-        <div class="jb-blob" style="width: 460px; height: 460px; top: -140px; left: -120px; background: #4F46E5; opacity: 0.65;" />
-        <div class="jb-blob" style="width: 420px; height: 420px; bottom: -160px; right: -100px; background: #0EA5A4; opacity: 0.55; animation-delay: -6s;" />
-        <div class="jb-blob" style="width: 300px; height: 300px; top: 38%; right: 8%; background: #F59E0B; opacity: 0.32; animation-delay: -3s;" />
-      </div>
-
+    <section class="tw:relative" style="padding: 112px 0 140px;">
       <v-container style="max-width: 1200px; position: relative; z-index: 1;">
         <v-row align="center">
           <v-col cols="12" md="6">
@@ -133,7 +127,7 @@ const employerSteps = [
     </section>
 
     <!-- ================= FEATURES ================= -->
-    <section class="tw:py-24" style="background: rgb(var(--v-theme-surface))">
+    <section class="tw:py-24">
       <v-container style="max-width: 1200px">
         <div class="tw:text-center tw:mb-14 tw:max-w-2xl tw:mx-auto">
           <h2 class="tw:text-3xl tw:font-bold" style="color:#1E1B4B">Everything you need, in one place</h2>
@@ -145,7 +139,7 @@ const employerSteps = [
         <v-row>
           <v-col v-for="feature in features" :key="feature.title" cols="12" sm="6" md="4" class="tw:mb-2">
             <TiltCard :glow="feature.badge === 'accent' ? 'primary' : feature.badge">
-              <v-card class="tw:h-full" elevation="0">
+              <v-card class="tw:h-full jb-card--glass" elevation="0">
                 <v-card-item class="tw:pa-6">
                   <div class="jb-badge tw:mb-5" :class="`jb-badge--${feature.badge}`" style="width: 56px; height: 56px;">
                     <v-icon :icon="feature.icon" size="28" />
@@ -173,7 +167,7 @@ const employerSteps = [
 
         <v-row>
           <v-col cols="12" md="6">
-            <div class="jb-card tw:p-8 tw:h-full">
+            <div class="jb-card jb-card--glass tw:p-8 tw:h-full">
               <div class="tw:flex tw:items-center tw:gap-3 tw:mb-6">
                 <div class="jb-badge jb-badge--primary" style="width: 40px; height: 40px;">
                   <v-icon icon="mdi-account-search-outline" size="20" />
@@ -195,7 +189,7 @@ const employerSteps = [
           </v-col>
 
           <v-col cols="12" md="6">
-            <div class="jb-card tw:p-8 tw:h-full">
+            <div class="jb-card jb-card--glass tw:p-8 tw:h-full">
               <div class="tw:flex tw:items-center tw:gap-3 tw:mb-6">
                 <div class="jb-badge jb-badge--secondary" style="width: 40px; height: 40px;">
                   <v-icon icon="mdi-domain" size="20" />

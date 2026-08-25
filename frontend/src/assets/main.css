@@ -16,6 +16,7 @@
   --jb-grad-primary: linear-gradient(135deg, #6366f1 0%, #4f46e5 55%, #4338ca 100%);
   --jb-grad-secondary: linear-gradient(135deg, #2dd4bf 0%, #0ea5a4 60%, #0b8685 100%);
   --jb-grad-accent: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  --jb-grad-violet: linear-gradient(135deg, #c084fc 0%, #a855f7 55%, #ec4899 100%);
 }
 
 html,
@@ -27,9 +28,17 @@ body,
 body {
   margin: 0;
   font-feature-settings: 'liga' 1, 'kern' 1;
-  background-color: #f5f7fb;
-  background-image: radial-gradient(rgba(79, 70, 229, 0.09) 1px, transparent 1px);
-  background-size: 26px 26px;
+  /* A very light base so the fixed AmbientBackground blobs (see below)
+     read clearly through it on every route, not just pages that used to
+     hand-roll their own blob markup. */
+  background-color: #f7f8fc;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jb-blob,
+  .jb-ambient-blob {
+    animation: none !important;
+  }
 }
 
 /* ------------------------------------------------------------------
@@ -69,6 +78,19 @@ body {
 .jb-card--hoverable:hover {
   transform: translateY(-4px);
   box-shadow: var(--jb-shadow-lift);
+}
+
+/* Frosted-glass variant: for surfaces sitting on top of the ambient
+   gradient blobs, so the color underneath still shows through. Text
+   content stays high-contrast (dark ink on ~70% white) so legibility
+   isn't traded away for the effect. Form inputs deliberately do NOT use
+   this - an outlined field on a see-through card reads as broken, not
+   "AI product". */
+.jb-card--glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 /* ------------------------------------------------------------------
@@ -134,4 +156,35 @@ body {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Slightly more opaque than .jb-glass - used on the nav drawer, where
+   text needs to stay legible while page content scrolls behind it. */
+.jb-glass-nav {
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ------------------------------------------------------------------
+   Global ambient background (AmbientBackground.vue) - mounted once in
+   App.vue, fixed behind every route, so the whole app shares one
+   backdrop instead of only the pages that used to roll their own
+   .jb-blob-field. Sections/cards need a transparent or glass background
+   for this to actually show through.
+   ------------------------------------------------------------------ */
+.jb-ambient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.jb-ambient-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.32;
+  animation: jb-float 20s ease-in-out infinite;
 }

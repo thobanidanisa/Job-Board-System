@@ -65,12 +65,7 @@ async function submitEmployer() {
 </script>
 
 <template>
-  <section class="tw:relative tw:overflow-hidden tw:flex tw:items-center tw:justify-center" style="min-height: calc(100vh - 64px - 90px); padding: 56px 16px;">
-    <div class="jb-blob-field">
-      <div class="jb-blob" style="width: 360px; height: 360px; top: -80px; left: -60px; background: #4F46E5;" />
-      <div class="jb-blob" style="width: 320px; height: 320px; bottom: -100px; right: -60px; background: #0EA5A4; animation-delay: -5s;" />
-    </div>
-
+  <section class="tw:relative tw:flex tw:items-center tw:justify-center" style="min-height: calc(100vh - 64px - 90px); padding: 56px 16px;">
     <v-card
       class="jb-glass tw:w-full"
       max-width="460"

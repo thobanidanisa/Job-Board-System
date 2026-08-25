@@ -57,7 +57,7 @@ onMounted(async () => {
       <v-progress-circular indeterminate color="primary" />
     </div>
 
-    <div v-else-if="sortedJobs.length === 0" class="jb-card tw:pa-10 tw:text-center">
+    <div v-else-if="sortedJobs.length === 0" class="jb-card jb-card--glass tw:pa-10 tw:text-center">
       <v-icon icon="mdi-briefcase-search-outline" size="48" color="primary" class="tw:mb-4" />
       <div class="tw:font-semibold tw:text-lg" style="color:#1E1B4B">No jobs posted yet</div>
       <p class="tw:text-sm tw:mt-2 tw:mb-6" style="color: rgba(30,27,75,0.6)">
@@ -68,7 +68,7 @@ onMounted(async () => {
 
     <v-row v-else>
       <v-col v-for="job in sortedJobs" :key="job.jobId" cols="12">
-        <div class="jb-card jb-card--hoverable tw:pa-6">
+        <div class="jb-card jb-card--glass jb-card--hoverable tw:pa-6">
           <div class="tw:flex tw:flex-col tw:sm:flex-row tw:sm:items-start tw:sm:justify-between tw:gap-3">
             <div>
               <div class="tw:flex tw:items-center tw:gap-3 tw:flex-wrap">

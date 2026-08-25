@@ -27,7 +27,7 @@ function handleLogout() {
 </script>
 
 <template>
-  <v-app>
+  <v-app style="background: transparent">
     <v-app-bar flat color="surface" class="jb-glass" style="box-shadow: 0 1px 0 rgba(226,232,240,0.9), 0 12px 24px -16px rgba(15,23,42,0.15);">
       <v-container class="tw:flex tw:items-center tw:py-0" style="max-width: 1200px">
         <router-link to="/" class="tw:flex tw:items-center tw:gap-2 tw:no-underline">

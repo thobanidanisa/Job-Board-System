@@ -8,7 +8,7 @@ const ui = useUiStore()
   <v-snackbar
     v-model="ui.snackbar.show"
     :color="ui.snackbar.color"
-    location="top right"
+    location="bottom right"
     timeout="4000"
     rounded="lg"
     elevation="8"

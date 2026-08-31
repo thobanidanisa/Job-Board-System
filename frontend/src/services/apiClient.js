@@ -29,24 +29,28 @@ apiClient.interceptors.request.use((config) => {
   return config
 })
 
+// Login/register legitimately answer 401 for bad credentials - that is a
+// form error to show inline, NOT an expired session, so those endpoints are
+// exempt from the session-expiry handling below.
+const isAuthEndpoint = (url = '') => url.includes('/auth/login') || url.includes('/auth/register')
+
 // Normalizes every failure into a single shape so callers only ever deal
 // with { message, errors, status } regardless of whether the backend
 // responded with an error, the request never reached it, or something
-// else went wrong while building the request. A 401 means the session is
-// no longer valid, so the persisted session is cleared and the user is
-// sent back to login with a hard redirect (simplest reliable way to reset
-// all app state without importing the store here).
+// else went wrong while building the request. A 401 on any other endpoint
+// means the session really is dead: clear it and announce it via a window
+// event, which App.vue turns into a normal SPA redirect. (Deliberately not
+// a window.location assignment - that full-page reload is what made
+// logging out and failed logins feel like the app was restarting.)
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
       const { status, data } = error.response
 
-      if (status === 401) {
+      if (status === 401 && !isAuthEndpoint(error.config?.url)) {
         localStorage.removeItem(AUTH_STORAGE_KEY)
-        if (!window.location.pathname.startsWith('/login')) {
-          window.location.href = '/login'
-        }
+        window.dispatchEvent(new CustomEvent('jobboard:session-expired'))
       }
 
       return Promise.reject({

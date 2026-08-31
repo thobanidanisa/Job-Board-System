@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import authService from '@/services/authService'
 import employerService from '@/services/employerService'
+import { isTokenExpired } from '@/utils/token'
 
 export const useAuthStore = defineStore(
   'auth',
@@ -10,7 +11,10 @@ export const useAuthStore = defineStore(
     const role = ref(null) // 'client' | 'employer'
     const token = ref(null)
 
-    const isAuthenticated = computed(() => Boolean(token.value))
+    // A persisted token that has expired must NOT count as a live session,
+    // otherwise the UI shows logged-in chrome (Logout button, dashboards)
+    // for a token every API call will reject with a 401.
+    const isAuthenticated = computed(() => Boolean(token.value) && !isTokenExpired(token.value))
     const isClient = computed(() => role.value === 'client')
     const isEmployer = computed(() => role.value === 'employer')
     const dashboardPath = computed(() =>
@@ -55,6 +59,17 @@ export const useAuthStore = defineStore(
       return user.value
     }
 
+    // Called on app start and before each guarded navigation so an expired
+    // session is cleared from both the store and localStorage, rather than
+    // lingering until the next request fails.
+    function checkSession() {
+      if (token.value && isTokenExpired(token.value)) {
+        logout()
+        return false
+      }
+      return Boolean(token.value)
+    }
+
     function logout() {
       user.value = null
       role.value = null
@@ -75,6 +90,7 @@ export const useAuthStore = defineStore(
       registerClient,
       registerEmployer,
       updateEmployerProfile,
+      checkSession,
       logout,
     }
   },

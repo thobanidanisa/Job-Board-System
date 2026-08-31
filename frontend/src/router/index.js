@@ -75,6 +75,10 @@ const router = createRouter({
 router.beforeEach((to) => {
   const auth = useAuthStore()
 
+  // Clears a persisted-but-expired token so an expired session can't slip
+  // past the checks below on a hard refresh into a protected route.
+  auth.checkSession()
+
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
     return { name: 'login', query: { redirect: to.fullPath } }
   }

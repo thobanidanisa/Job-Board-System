@@ -107,7 +107,7 @@ async function submitEmployer() {
                 :rules="[required('Password')]"
                 @click:append-inner="showClientPassword = !showClientPassword"
               />
-              <v-btn type="submit" color="primary" size="large" block :loading="loading" class="jb-btn-gradient tw:mt-4">
+              <v-btn type="button" color="primary" size="large" block :loading="loading" class="jb-btn-gradient tw:mt-4" @click="submitClient">
                 Log In
               </v-btn>
             </v-form>
@@ -132,7 +132,7 @@ async function submitEmployer() {
                 :rules="[required('Password')]"
                 @click:append-inner="showEmployerPassword = !showEmployerPassword"
               />
-              <v-btn type="submit" color="primary" size="large" block :loading="loading" class="jb-btn-gradient tw:mt-4">
+              <v-btn type="button" color="primary" size="large" block :loading="loading" class="jb-btn-gradient tw:mt-4" @click="submitEmployer">
                 Log In
               </v-btn>
             </v-form>

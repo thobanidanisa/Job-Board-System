@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 const errorHandler = require('./middleware/errorHandler');
+const corsOptions = require('./utils/corsOptions');
 
 const clientAuthRoutes = require('./routes/clientAuthRoutes');
 const employerAuthRoutes = require('./routes/employerAuthRoutes');
@@ -20,10 +21,7 @@ const app = express();
    Core middleware
    --------------------------------------------------------------- */
 app.use(helmet());
-app.use(cors({
-  origin: process.env.CLIENT_APP_URL,
-  credentials: true,
-}));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));

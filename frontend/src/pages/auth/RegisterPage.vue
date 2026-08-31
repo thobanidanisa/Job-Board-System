@@ -272,7 +272,7 @@ async function submitEmployer() {
                 </v-col>
               </v-row>
 
-              <v-btn type="submit" color="primary" size="large" block :loading="clientLoading" class="jb-btn-gradient tw:mt-4">
+              <v-btn type="button" color="primary" size="large" block :loading="clientLoading" class="jb-btn-gradient tw:mt-4" @click="submitClient">
                 Create Job Seeker Account
               </v-btn>
             </v-form>
@@ -395,7 +395,7 @@ async function submitEmployer() {
                 </v-col>
               </v-row>
 
-              <v-btn type="submit" color="primary" size="large" block :loading="employerLoading" class="jb-btn-gradient tw:mt-4">
+              <v-btn type="button" color="primary" size="large" block :loading="employerLoading" class="jb-btn-gradient tw:mt-4" @click="submitEmployer">
                 Create Employer Account
               </v-btn>
             </v-form>

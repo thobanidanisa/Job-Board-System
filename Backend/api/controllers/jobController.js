@@ -87,4 +87,47 @@ const listMyJobs = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = { createJob, listMyJobs };
+const getJobById = asyncHandler(async (req, res) => {
+  const job = await jobModel.findById(req.params.id, req.auth.id);
+
+  if (!job) {
+    throw new ApiError(404, 'Job not found');
+  }
+
+  res.status(200).json({
+    success: true,
+    message: 'Job retrieved successfully',
+    data: { job: toJobResponse(job) },
+  });
+});
+
+const updateJob = asyncHandler(async (req, res) => {
+  const { categoryId, provinceId } = req.body;
+
+  const checks = [];
+  if (categoryId !== undefined) checks.push(lookupModel.categoryExists(categoryId));
+  if (provinceId !== undefined) checks.push(lookupModel.provinceExists(provinceId));
+  const results = await Promise.all(checks);
+
+  let resultIndex = 0;
+  if (categoryId !== undefined && !results[resultIndex++]) {
+    throw new ApiError(422, 'Invalid category selected');
+  }
+  if (provinceId !== undefined && !results[resultIndex++]) {
+    throw new ApiError(422, 'Invalid province selected');
+  }
+
+  const job = await jobModel.updateById(req.params.id, req.auth.id, req.body);
+
+  if (!job) {
+    throw new ApiError(404, 'Job not found');
+  }
+
+  res.status(200).json({
+    success: true,
+    message: 'Job updated successfully',
+    data: { job: toJobResponse(job) },
+  });
+});
+
+module.exports = { createJob, listMyJobs, getJobById, updateJob };

@@ -21,4 +21,22 @@ const listMyJobs = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createJob, listMyJobs };
+const getJob = asyncHandler(async (req, res) => {
+  try {
+    const { data } = await apiClient.get(`/jobs/${req.params.id}`, forwardAuthHeader(req));
+    res.status(200).json(data);
+  } catch (error) {
+    throw forwardApiError(error);
+  }
+});
+
+const updateJob = asyncHandler(async (req, res) => {
+  try {
+    const { data } = await apiClient.patch(`/jobs/${req.params.id}`, req.body, forwardAuthHeader(req));
+    res.status(200).json(data);
+  } catch (error) {
+    throw forwardApiError(error);
+  }
+});
+
+module.exports = { createJob, listMyJobs, getJob, updateJob };

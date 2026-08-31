@@ -22,7 +22,7 @@ const menuItems = [
   { label: 'Post a Job', icon: 'mdi-briefcase-plus-outline', to: '/employer/jobs/new', available: true },
   { label: 'My Jobs', icon: 'mdi-briefcase-outline', to: '/employer/jobs', available: true },
   { label: 'Applications', icon: 'mdi-account-multiple-check-outline', available: false },
-  { label: 'Company Profile', icon: 'mdi-domain', available: false },
+  { label: 'Company Profile', icon: 'mdi-domain', to: '/employer/profile', available: true },
 ]
 
 function handleLogout() {

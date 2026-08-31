@@ -27,5 +27,28 @@ export const useJobsStore = defineStore('jobs', () => {
     return job
   }
 
-  return { myJobs, loaded, loading, activeCount, fetchMyJobs, postJob }
+  async function updateJob(jobId, payload) {
+    const { data } = await jobService.updateJob(jobId, payload)
+    const job = data.data.job
+    const index = myJobs.value.findIndex((j) => j.jobId === jobId)
+    if (index !== -1) {
+      myJobs.value.splice(index, 1, job)
+    } else {
+      myJobs.value = [job, ...myJobs.value]
+    }
+    return job
+  }
+
+  // Edit pages land here on a direct URL/refresh where myJobs may not be
+  // loaded yet, so this checks the local cache first and only hits the
+  // API if the job isn't already in it.
+  async function getCachedOrFetchJob(jobId) {
+    const cached = myJobs.value.find((j) => j.jobId === jobId)
+    if (cached) return cached
+
+    const { data } = await jobService.getJob(jobId)
+    return data.data.job
+  }
+
+  return { myJobs, loaded, loading, activeCount, fetchMyJobs, postJob, updateJob, getCachedOrFetchJob }
 })

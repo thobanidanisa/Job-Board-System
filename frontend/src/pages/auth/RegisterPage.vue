@@ -16,6 +16,7 @@ import {
   matchesPassword,
   isChecked,
 } from '@/utils/validators'
+import { GENDER_OPTIONS, INDUSTRY_OPTIONS } from '@/utils/constants'
 
 const route = useRoute()
 const router = useRouter()
@@ -27,11 +28,8 @@ const tab = ref(route.query.role === 'employer' ? 'employer' : 'client')
 const provinces = ref([])
 const provincesLoading = ref(true)
 
-const genderOptions = ['Male', 'Female', 'Other', 'Prefer not to say']
-const industryOptions = [
-  'IT', 'Sales', 'Admin', 'Construction', 'Finance', 'Healthcare',
-  'Education', 'Logistics', 'Hospitality', 'Marketing', 'Manufacturing', 'Retail',
-]
+const genderOptions = GENDER_OPTIONS
+const industryOptions = INDUSTRY_OPTIONS
 
 onMounted(async () => {
   try {

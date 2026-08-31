@@ -8,6 +8,8 @@ const jobsStore = useJobsStore()
 const ui = useUiStore()
 
 const provinces = ref([])
+const updatingJobId = ref(null)
+const jobPendingCancel = ref(null)
 
 const provinceName = (provinceId) =>
   provinces.value.find((p) => p.provinceId === provinceId)?.provinceName || ''
@@ -24,11 +26,31 @@ const formatDate = (value) => {
   return new Date(value).toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
+// Which one-click status transitions make sense from the job's current
+// status. "Cancel" is handled separately below since it goes through a
+// confirm dialog rather than being one-click like these.
+function statusActions(job) {
+  const actions = []
+  if (job.status === 'Draft') actions.push({ label: 'Publish', icon: 'mdi-publish', status: 'Open' })
+  if (job.status === 'Open') actions.push({ label: 'Close', icon: 'mdi-lock-outline', status: 'Closed' })
+  if (job.status === 'Closed' || job.status === 'Cancelled') {
+    actions.push({ label: 'Reopen', icon: 'mdi-lock-open-variant-outline', status: 'Open' })
+  }
+  return actions
+}
+
 const sortedJobs = computed(() => jobsStore.myJobs)
+
+const cancelDialogOpen = computed({
+  get: () => Boolean(jobPendingCancel.value),
+  set: (value) => {
+    if (!value) jobPendingCancel.value = null
+  },
+})
 
 onMounted(async () => {
   try {
-    const [jobsRes, provincesRes] = await Promise.all([
+    const [, provincesRes] = await Promise.all([
       jobsStore.fetchMyJobs(),
       lookupService.getProvinces(),
     ])
@@ -37,6 +59,24 @@ onMounted(async () => {
     ui.error('Could not load your jobs. Please refresh the page.')
   }
 })
+
+async function changeStatus(job, status) {
+  updatingJobId.value = job.jobId
+  try {
+    await jobsStore.updateJob(job.jobId, { status })
+    ui.success(`"${job.jobTitle}" marked as ${status}.`)
+  } catch (err) {
+    ui.error(err.message || 'Could not update the job. Please try again.')
+  } finally {
+    updatingJobId.value = null
+  }
+}
+
+async function confirmCancel() {
+  const job = jobPendingCancel.value
+  jobPendingCancel.value = null
+  if (job) await changeStatus(job, 'Cancelled')
+}
 </script>
 
 <template>
@@ -82,13 +122,60 @@ onMounted(async () => {
                 <v-chip v-for="tag in job.skillTags" :key="tag" size="x-small" variant="tonal">{{ tag }}</v-chip>
               </div>
             </div>
-            <div class="tw:text-sm tw:text-right" style="color: rgba(30,27,75,0.6); white-space: nowrap;">
-              <div>Posted {{ formatDate(job.createdAt) }}</div>
-              <div>Closes {{ formatDate(job.applicationEndDate) }}</div>
+
+            <div class="tw:flex tw:items-start tw:gap-2">
+              <div class="tw:text-sm tw:text-right" style="color: rgba(30,27,75,0.6); white-space: nowrap;">
+                <div>Posted {{ formatDate(job.createdAt) }}</div>
+                <div>Closes {{ formatDate(job.applicationEndDate) }}</div>
+              </div>
+
+              <v-menu>
+                <template #activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    icon="mdi-dots-vertical"
+                    variant="text"
+                    size="small"
+                    :loading="updatingJobId === job.jobId"
+                  />
+                </template>
+                <v-list density="compact">
+                  <v-list-item :to="`/employer/jobs/${job.jobId}/edit`" prepend-icon="mdi-pencil-outline" title="Edit" />
+                  <v-list-item
+                    v-for="action in statusActions(job)"
+                    :key="action.status"
+                    :prepend-icon="action.icon"
+                    :title="action.label"
+                    @click="changeStatus(job, action.status)"
+                  />
+                  <v-list-item
+                    v-if="job.status !== 'Cancelled'"
+                    prepend-icon="mdi-close-circle-outline"
+                    title="Cancel"
+                    base-color="error"
+                    @click="jobPendingCancel = job"
+                  />
+                </v-list>
+              </v-menu>
             </div>
           </div>
         </div>
       </v-col>
     </v-row>
+
+    <v-dialog v-model="cancelDialogOpen" max-width="420">
+      <v-card class="tw:pa-2" rounded="lg">
+        <v-card-title class="tw:font-semibold">Cancel this job?</v-card-title>
+        <v-card-text style="color: rgba(30,27,75,0.7)">
+          "{{ jobPendingCancel?.jobTitle }}" will be marked as Cancelled and won't accept new applications. You can
+          reopen it later from this menu.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn variant="text" @click="cancelDialogOpen = false">Keep Job</v-btn>
+          <v-btn color="error" variant="flat" @click="confirmCancel">Cancel Job</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>

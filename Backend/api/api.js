@@ -8,6 +8,7 @@ const errorHandler = require('./middleware/errorHandler');
 
 const clientAuthRoutes = require('./routes/clientAuthRoutes');
 const employerAuthRoutes = require('./routes/employerAuthRoutes');
+const employerRoutes = require('./routes/employerRoutes');
 const lookupRoutes = require('./routes/lookupRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 // Forgot-password / OTP-via-email flow is paused for now - re-add
@@ -39,6 +40,7 @@ app.get('/api/health', (req, res) => {
    --------------------------------------------------------------- */
 app.use('/api/clients/auth', clientAuthRoutes);
 app.use('/api/employers/auth', employerAuthRoutes);
+app.use('/api/employers', employerRoutes);
 app.use('/api/lookups', lookupRoutes);
 app.use('/api/jobs', jobRoutes);
 

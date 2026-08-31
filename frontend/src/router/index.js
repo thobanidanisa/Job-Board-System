@@ -45,6 +45,18 @@ const routes = [
     meta: { layout: 'employer', requiresAuth: true, role: 'employer' },
   },
   {
+    path: '/employer/jobs/:id/edit',
+    name: 'employer-jobs-edit',
+    component: () => import('@/pages/employer/EditJobPage.vue'),
+    meta: { layout: 'employer', requiresAuth: true, role: 'employer' },
+  },
+  {
+    path: '/employer/profile',
+    name: 'employer-profile',
+    component: () => import('@/pages/employer/CompanyProfilePage.vue'),
+    meta: { layout: 'employer', requiresAuth: true, role: 'employer' },
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/pages/NotFoundPage.vue'),

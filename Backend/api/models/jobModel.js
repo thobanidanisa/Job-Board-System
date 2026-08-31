@@ -99,16 +99,15 @@ async function create({
   }
 }
 
-async function findByEmployer(employerId) {
-  const { rows: jobs } = await pool.query(
-    `SELECT ${JOB_COLUMNS_ALIASED}, c.category_name
-     FROM jobs j
-     LEFT JOIN categories c ON c.category_id = j.category_id
-     WHERE j.employer_id = $1
-     ORDER BY j.created_at DESC`,
-    [employerId]
-  );
+const groupByJob = (rows, column) =>
+  rows.reduce((acc, row) => {
+    (acc[row.job_id] ||= []).push(row[column]);
+    return acc;
+  }, {});
 
+// Attaches skill_tags/required_documents to a list of already-fetched job
+// rows in two queries total, regardless of how many jobs there are.
+async function attachTagsAndDocs(jobs) {
   if (jobs.length === 0) return [];
 
   const jobIds = jobs.map((j) => j.job_id);
@@ -124,12 +123,6 @@ async function findByEmployer(employerId) {
     ),
   ]);
 
-  const groupByJob = (rows, column) =>
-    rows.reduce((acc, row) => {
-      (acc[row.job_id] ||= []).push(row[column]);
-      return acc;
-    }, {});
-
   const tagsByJob = groupByJob(tags, 'skill_name');
   const docsByJob = groupByJob(docs, 'document_type');
 
@@ -140,4 +133,138 @@ async function findByEmployer(employerId) {
   }));
 }
 
-module.exports = { create, findByEmployer };
+async function findByEmployer(employerId) {
+  const { rows: jobs } = await pool.query(
+    `SELECT ${JOB_COLUMNS_ALIASED}, c.category_name
+     FROM jobs j
+     LEFT JOIN categories c ON c.category_id = j.category_id
+     WHERE j.employer_id = $1
+     ORDER BY j.created_at DESC`,
+    [employerId]
+  );
+
+  return attachTagsAndDocs(jobs);
+}
+
+// Scoped to employerId so a job that exists but belongs to someone else
+// comes back as "not found" rather than leaking its existence.
+async function findById(jobId, employerId) {
+  const { rows } = await pool.query(
+    `SELECT ${JOB_COLUMNS_ALIASED}, c.category_name
+     FROM jobs j
+     LEFT JOIN categories c ON c.category_id = j.category_id
+     WHERE j.job_id = $1 AND j.employer_id = $2`,
+    [jobId, employerId]
+  );
+
+  if (rows.length === 0) return null;
+
+  const [job] = await attachTagsAndDocs(rows);
+  return job;
+}
+
+const UPDATABLE_COLUMNS = {
+  jobTitle: 'job_title',
+  department: 'department',
+  description: 'description',
+  categoryId: 'category_id',
+  salaryMin: 'salary_min',
+  salaryMax: 'salary_max',
+  provinceId: 'province_id',
+  town: 'town',
+  applicationStartDate: 'application_start_date',
+  applicationEndDate: 'application_end_date',
+  status: 'status',
+};
+
+// Partial update, scoped to (jobId, employerId) in the WHERE clause itself
+// so ownership is enforced by the query, not a separate fetch-then-check
+// (avoids a TOCTOU race and keeps the "is this yours" logic in one place).
+// skillTags/requiredDocuments, when present in `fields`, are replaced
+// wholesale (delete + re-insert) in the same transaction as the row update.
+// Returns null when nothing matched (not found or not owned).
+async function updateById(jobId, employerId, fields) {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const setClauses = [];
+    const values = [];
+    let paramIndex = 1;
+
+    for (const [key, column] of Object.entries(UPDATABLE_COLUMNS)) {
+      if (fields[key] !== undefined) {
+        setClauses.push(`${column} = $${paramIndex}`);
+        values.push(fields[key]);
+        paramIndex += 1;
+      }
+    }
+
+    let job;
+    if (setClauses.length > 0) {
+      values.push(jobId, employerId);
+      const { rows } = await client.query(
+        `UPDATE jobs SET ${setClauses.join(', ')}
+         WHERE job_id = $${paramIndex} AND employer_id = $${paramIndex + 1}
+         RETURNING ${JOB_COLUMNS}`,
+        values
+      );
+      job = rows[0];
+    } else {
+      const { rows } = await client.query(
+        `SELECT ${JOB_COLUMNS} FROM jobs WHERE job_id = $1 AND employer_id = $2`,
+        [jobId, employerId]
+      );
+      job = rows[0];
+    }
+
+    if (!job) {
+      await client.query('ROLLBACK');
+      return null;
+    }
+
+    if (fields.skillTags !== undefined) {
+      await client.query('DELETE FROM job_skill_tags WHERE job_id = $1', [jobId]);
+      if (fields.skillTags.length) {
+        const tagValues = [];
+        const rowsSql = fields.skillTags.map((tag, i) => {
+          tagValues.push(jobId, tag);
+          return `($${i * 2 + 1}, $${i * 2 + 2})`;
+        });
+        await client.query(
+          `INSERT INTO job_skill_tags (job_id, skill_name) VALUES ${rowsSql.join(',')}`,
+          tagValues
+        );
+      }
+    }
+
+    if (fields.requiredDocuments !== undefined) {
+      await client.query('DELETE FROM job_required_documents WHERE job_id = $1', [jobId]);
+      if (fields.requiredDocuments.length) {
+        const docValues = [];
+        const rowsSql = fields.requiredDocuments.map((docType, i) => {
+          docValues.push(jobId, docType);
+          return `($${i * 2 + 1}, $${i * 2 + 2}, TRUE)`;
+        });
+        await client.query(
+          `INSERT INTO job_required_documents (job_id, document_type, is_mandatory) VALUES ${rowsSql.join(',')}`,
+          docValues
+        );
+      }
+    }
+
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+
+  // Re-fetch so the response always reflects the true current state of
+  // tags/docs, whether or not this call touched them.
+  return findById(jobId, employerId);
+}
+
+module.exports = { create, findByEmployer, findById, updateById };

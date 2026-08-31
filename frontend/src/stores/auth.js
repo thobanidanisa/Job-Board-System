@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import authService from '@/services/authService'
+import employerService from '@/services/employerService'
 
 export const useAuthStore = defineStore(
   'auth',
@@ -46,6 +47,14 @@ export const useAuthStore = defineStore(
       setSession({ userData: data.data.employer, userRole: 'employer', authToken: data.data.token })
     }
 
+    // Merges the updated employer fields into the current session so the
+    // app bar/dashboard reflect the change immediately, no re-login needed.
+    async function updateEmployerProfile(payload) {
+      const { data } = await employerService.updateProfile(payload)
+      user.value = { ...user.value, ...data.data.employer }
+      return user.value
+    }
+
     function logout() {
       user.value = null
       role.value = null
@@ -65,6 +74,7 @@ export const useAuthStore = defineStore(
       loginEmployer,
       registerClient,
       registerEmployer,
+      updateEmployerProfile,
       logout,
     }
   },

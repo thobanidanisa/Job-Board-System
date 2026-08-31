@@ -54,4 +54,42 @@ async function create({
   return rows[0];
 }
 
-module.exports = { findByEmail, create };
+// Profile edit only - deliberately excludes email/password, which are a
+// separate concern (re-verification) outside this endpoint's scope.
+async function updateProfile(employerId, {
+  companyName,
+  contactPerson,
+  hrEmail,
+  phoneNumber,
+  industryType,
+  provinceId,
+  town,
+  streetName,
+  suburb,
+  postalCode,
+}) {
+  const { rows } = await pool.query(
+    `UPDATE employers SET
+       company_name = $1, contact_person = $2, hr_email = $3,
+       phone_number = $4, industry_type = $5, province_id = $6, town = $7,
+       street_name = $8, suburb = $9, postal_code = $10
+     WHERE employer_id = $11
+     RETURNING ${PUBLIC_COLUMNS}`,
+    [
+      companyName,
+      contactPerson,
+      hrEmail,
+      phoneNumber,
+      industryType,
+      provinceId,
+      town,
+      streetName || null,
+      suburb || null,
+      postalCode || null,
+      employerId,
+    ]
+  );
+  return rows[0] || null;
+}
+
+module.exports = { findByEmail, create, updateProfile };

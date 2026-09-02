@@ -9,6 +9,7 @@ const corsOptions = require('./utils/corsOptions');
 
 const clientAuthRoutes = require('./routes/clientAuthRoutes');
 const employerAuthRoutes = require('./routes/employerAuthRoutes');
+const clientRoutes = require('./routes/clientRoutes');
 const employerRoutes = require('./routes/employerRoutes');
 const lookupRoutes = require('./routes/lookupRoutes');
 const jobRoutes = require('./routes/jobRoutes');
@@ -36,6 +37,7 @@ app.get('/api/health', (req, res) => {
    --------------------------------------------------------------- */
 app.use('/api/clients/auth', clientAuthRoutes);
 app.use('/api/employers/auth', employerAuthRoutes);
+app.use('/api/clients', clientRoutes);
 app.use('/api/employers', employerRoutes);
 app.use('/api/lookups', lookupRoutes);
 app.use('/api/jobs', jobRoutes);

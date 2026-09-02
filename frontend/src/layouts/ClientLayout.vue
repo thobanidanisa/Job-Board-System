@@ -21,7 +21,7 @@ const menuItems = [
   { label: 'Dashboard', icon: 'mdi-view-dashboard-outline', to: '/client/dashboard', available: true },
   { label: 'Search Jobs', icon: 'mdi-briefcase-search-outline', available: false },
   { label: 'My Applications', icon: 'mdi-file-document-check-outline', available: false },
-  { label: 'Profile', icon: 'mdi-account-outline', available: false },
+  { label: 'Profile', icon: 'mdi-account-outline', to: '/client/profile', available: true },
 ]
 
 function handleLogout() {

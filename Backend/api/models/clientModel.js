@@ -62,4 +62,28 @@ async function create({
   return rows[0];
 }
 
-module.exports = { findByEmail, findByIdNumber, create };
+// Profile edit only. Deliberately excludes email/password (separate
+// concern) and id_number/date_of_birth, which are identity fields set at
+// registration rather than things a profile form should rewrite.
+async function updateProfile(clientId, {
+  name,
+  surname,
+  phoneNumber,
+  provinceId,
+  town,
+  streetName,
+  suburb,
+  postalCode,
+}) {
+  const { rows } = await pool.query(
+    `UPDATE clients SET
+       name = $1, surname = $2, phone_number = $3, province_id = $4,
+       town = $5, street_name = $6, suburb = $7, postal_code = $8
+     WHERE client_id = $9
+     RETURNING ${PUBLIC_COLUMNS}`,
+    [name, surname, phoneNumber, provinceId, town, streetName, suburb, postalCode, clientId]
+  );
+  return rows[0] || null;
+}
+
+module.exports = { findByEmail, findByIdNumber, create, updateProfile };

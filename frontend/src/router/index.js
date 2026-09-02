@@ -27,6 +27,12 @@ const routes = [
     meta: { layout: 'client', requiresAuth: true, role: 'client' },
   },
   {
+    path: '/client/profile',
+    name: 'client-profile',
+    component: () => import('@/pages/client/ClientProfilePage.vue'),
+    meta: { layout: 'client', requiresAuth: true, role: 'client' },
+  },
+  {
     path: '/employer/dashboard',
     name: 'employer-dashboard',
     component: () => import('@/pages/employer/EmployerDashboardPage.vue'),

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import authService from '@/services/authService'
+import clientService from '@/services/clientService'
 import employerService from '@/services/employerService'
 import { isTokenExpired } from '@/utils/token'
 
@@ -51,6 +52,13 @@ export const useAuthStore = defineStore(
       setSession({ userData: data.data.employer, userRole: 'employer', authToken: data.data.token })
     }
 
+    // Same as updateEmployerProfile, for the job-seeker side.
+    async function updateClientProfile(payload) {
+      const { data } = await clientService.updateProfile(payload)
+      user.value = { ...user.value, ...data.data.client }
+      return user.value
+    }
+
     // Merges the updated employer fields into the current session so the
     // app bar/dashboard reflect the change immediately, no re-login needed.
     async function updateEmployerProfile(payload) {
@@ -89,6 +97,7 @@ export const useAuthStore = defineStore(
       loginEmployer,
       registerClient,
       registerEmployer,
+      updateClientProfile,
       updateEmployerProfile,
       checkSession,
       logout,

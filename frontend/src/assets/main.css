@@ -60,6 +60,7 @@ body {
 .jb-tilt--glow-secondary:hover { box-shadow: var(--jb-shadow-lift), var(--jb-shadow-glow-secondary); }
 
 .jb-tilt__inner {
+  height: 100%;
   transform: translateZ(28px);
 }
 

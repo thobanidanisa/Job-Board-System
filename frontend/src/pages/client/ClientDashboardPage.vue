@@ -43,7 +43,7 @@ const profileFields = computed(() => [
     <v-row>
       <v-col v-for="stat in stats" :key="stat.label" cols="12" sm="4">
         <TiltCard :max-tilt="4" :glow="stat.badge === 'accent' ? 'primary' : stat.badge">
-          <v-card class="tw:pa-5 jb-card--glass" elevation="0">
+          <v-card class="tw:p-5 jb-card--glass" elevation="0">
             <div class="tw:flex tw:items-center tw:gap-4">
               <div class="jb-badge" :class="`jb-badge--${stat.badge}`" style="width: 52px; height: 52px;">
                 <v-icon :icon="stat.icon" size="24" />
@@ -60,11 +60,11 @@ const profileFields = computed(() => [
 
     <v-row class="tw:mt-6">
       <v-col cols="12" md="7">
-        <div class="jb-card jb-card--glass tw:pa-6 tw:h-full">
+        <div class="jb-card jb-card--glass tw:p-6 tw:h-full">
           <div class="tw:font-semibold tw:text-lg tw:mb-5" style="color:#1E1B4B">What's next</div>
           <v-row>
             <v-col cols="12" sm="6">
-              <div class="jb-card jb-card--hoverable tw:pa-5" style="background: var(--jb-grad-primary); color: #fff; border: none;">
+              <div class="jb-card jb-card--hoverable tw:p-5" style="background: var(--jb-grad-primary); color: #fff; border: none;">
                 <v-icon icon="mdi-briefcase-search-outline" size="28" class="tw:mb-3" />
                 <div class="tw:font-semibold">Search Jobs</div>
                 <div class="tw:text-sm tw:mt-1" style="opacity: 0.85">Browse and filter open roles.</div>
@@ -72,7 +72,7 @@ const profileFields = computed(() => [
               </div>
             </v-col>
             <v-col cols="12" sm="6">
-              <div class="jb-card jb-card--hoverable tw:pa-5" style="background: var(--jb-grad-secondary); color: #fff; border: none;">
+              <div class="jb-card jb-card--hoverable tw:p-5" style="background: var(--jb-grad-secondary); color: #fff; border: none;">
                 <v-icon icon="mdi-file-document-check-outline" size="28" class="tw:mb-3" />
                 <div class="tw:font-semibold">Track Applications</div>
                 <div class="tw:text-sm tw:mt-1" style="opacity: 0.85">Follow every application's status.</div>
@@ -85,7 +85,7 @@ const profileFields = computed(() => [
 
       <v-col cols="12" md="5">
         <div class="jb-card jb-card--glass tw:h-full">
-          <div class="tw:font-semibold tw:text-lg tw:pa-6 tw:pb-2" style="color:#1E1B4B">Your Details</div>
+          <div class="tw:font-semibold tw:text-lg tw:p-6 tw:pb-2" style="color:#1E1B4B">Your Details</div>
           <v-list bg-color="transparent" class="tw:pb-4">
             <v-list-item v-for="field in profileFields" :key="field.label" :title="field.value || '-'" :subtitle="field.label">
               <template #prepend>

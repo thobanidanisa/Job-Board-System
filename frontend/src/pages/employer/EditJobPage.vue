@@ -54,7 +54,7 @@ async function handleSubmit(payload) {
       <v-progress-circular indeterminate color="primary" />
     </div>
 
-    <div v-else-if="notFound" class="jb-card jb-card--glass tw:pa-10 tw:text-center">
+    <div v-else-if="notFound" class="jb-card jb-card--glass tw:p-10 tw:text-center">
       <v-icon icon="mdi-briefcase-remove-outline" size="48" color="primary" class="tw:mb-4" />
       <div class="tw:font-semibold tw:text-lg" style="color:#1E1B4B">Job not found</div>
       <p class="tw:text-sm tw:mt-2 tw:mb-6" style="color: rgba(30,27,75,0.6)">

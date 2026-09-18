@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="alternate icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Board</title>
+    <!--
+      Cascade-layer order for Tailwind v4 + Vuetify 4. This must be the first
+      CSS the browser sees: in production Vite emits per-component Vuetify
+      CSS (VAvatar, VMenu, ...) as <link>s that load BEFORE main.css, which
+      would otherwise register the vuetify-* layers first and let Tailwind's
+      preflight reset (margin/padding/border: 0) beat every Vuetify component.
+    -->
+    <style>
+      @layer properties, theme, base, vuetify-core, components, vuetify-components, vuetify-overrides, utilities, vuetify-utilities, vuetify-final;
+    </style>
   </head>
   <body>
     <div id="app"></div>

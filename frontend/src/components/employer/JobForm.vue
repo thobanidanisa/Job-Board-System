@@ -134,7 +134,7 @@ defineExpose({ validate: () => form.value?.validate() })
   <v-form ref="form" @submit.prevent="handleSubmit">
     <v-row>
       <v-col cols="12" lg="7">
-        <div class="jb-card jb-card--glass tw:pa-6 tw:md:pa-7 tw:mb-5">
+        <div class="jb-card jb-card--glass tw:p-6 tw:md:p-7 tw:mb-5">
           <div class="tw:flex tw:items-center tw:gap-3 tw:mb-5">
             <div class="jb-badge jb-badge--primary" style="width: 36px; height: 36px;">
               <v-icon icon="mdi-briefcase-edit-outline" size="18" />
@@ -187,7 +187,7 @@ defineExpose({ validate: () => form.value?.validate() })
           </v-row>
         </div>
 
-        <div class="jb-card jb-card--glass tw:pa-6 tw:md:pa-7 tw:mb-5">
+        <div class="jb-card jb-card--glass tw:p-6 tw:md:p-7 tw:mb-5">
           <div class="tw:flex tw:items-center tw:gap-3 tw:mb-5">
             <div class="jb-badge jb-badge--secondary" style="width: 36px; height: 36px;">
               <v-icon icon="mdi-map-marker-outline" size="18" />
@@ -233,7 +233,7 @@ defineExpose({ validate: () => form.value?.validate() })
           </v-row>
         </div>
 
-        <div class="jb-card jb-card--glass tw:pa-6 tw:md:pa-7 tw:mb-5">
+        <div class="jb-card jb-card--glass tw:p-6 tw:md:p-7 tw:mb-5">
           <div class="tw:flex tw:items-center tw:gap-3 tw:mb-5">
             <div class="jb-badge jb-badge--accent" style="width: 36px; height: 36px;">
               <v-icon icon="mdi-calendar-range-outline" size="18" />
@@ -260,7 +260,7 @@ defineExpose({ validate: () => form.value?.validate() })
           </v-row>
         </div>
 
-        <div class="jb-card jb-card--glass tw:pa-6 tw:md:pa-7 tw:mb-6">
+        <div class="jb-card jb-card--glass tw:p-6 tw:md:p-7 tw:mb-6">
           <div class="tw:flex tw:items-center tw:gap-3 tw:mb-1">
             <div class="jb-badge jb-badge--secondary" style="width: 36px; height: 36px;">
               <v-icon icon="mdi-file-check-outline" size="18" />
@@ -289,7 +289,7 @@ defineExpose({ validate: () => form.value?.validate() })
       </v-col>
 
       <v-col cols="12" lg="5">
-        <div class="jb-card jb-card--glass tw:pa-6 tw:lg:sticky tw:lg:top-24">
+        <div class="jb-card jb-card--glass tw:p-6 tw:lg:sticky tw:lg:top-24">
           <div class="tw:flex tw:items-center tw:gap-2 tw:mb-5">
             <v-icon icon="mdi-eye-outline" color="primary" />
             <span class="tw:font-semibold tw:text-lg" style="color:#1E1B4B">Live Preview</span>

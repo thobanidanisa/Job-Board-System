@@ -52,11 +52,11 @@ const employerSteps = [
 <template>
   <div>
     <!-- ================= HERO ================= -->
-    <section class="tw:relative" style="padding: 112px 0 140px;">
+    <section class="tw:relative tw:pt-16 tw:pb-20 tw:md:pt-28 tw:md:pb-36">
       <v-container style="max-width: 1200px; position: relative; z-index: 1;">
         <v-row align="center">
           <v-col cols="12" md="6">
-            <v-chip color="primary" variant="tonal" class="tw:mb-5" prepend-icon="mdi-sparkles-outline">
+            <v-chip color="primary" variant="tonal" class="tw:mb-5" prepend-icon="mdi-creation-outline">
               Clients &amp; Employers, one platform
             </v-chip>
             <h1 class="tw:text-4xl tw:md:text-5xl tw:font-extrabold tw:leading-tight" style="color:#1E1B4B">
@@ -86,7 +86,7 @@ const employerSteps = [
           <v-col cols="12" md="6" class="tw:mt-12 tw:md:mt-0">
             <TiltCard :max-tilt="5" :base-tilt-x="4" :base-tilt-y="-6">
               <v-card class="jb-glass" elevation="0" rounded="lg">
-                <v-card-item class="tw:pa-5">
+                <v-card-item class="tw:p-5">
                   <div class="tw:flex tw:items-center tw:justify-between">
                     <span class="tw:font-semibold" style="color:#1E1B4B">Recommended for you</span>
                     <v-chip size="small" color="success" variant="tonal">92% match</v-chip>
@@ -138,9 +138,9 @@ const employerSteps = [
 
         <v-row>
           <v-col v-for="feature in features" :key="feature.title" cols="12" sm="6" md="4" class="tw:mb-2">
-            <TiltCard :glow="feature.badge === 'accent' ? 'primary' : feature.badge">
+            <TiltCard class="tw:h-full" :glow="feature.badge === 'accent' ? 'primary' : feature.badge">
               <v-card class="tw:h-full jb-card--glass" elevation="0">
-                <v-card-item class="tw:pa-6">
+                <v-card-item class="tw:p-6">
                   <div class="jb-badge tw:mb-5" :class="`jb-badge--${feature.badge}`" style="width: 56px; height: 56px;">
                     <v-icon :icon="feature.icon" size="28" />
                   </div>
@@ -166,15 +166,15 @@ const employerSteps = [
         </div>
 
         <v-row>
-          <v-col cols="12" md="6">
-            <div class="jb-card jb-card--glass tw:p-8 tw:h-full">
+          <v-col cols="12" md="6" class="tw:flex">
+            <div class="jb-card jb-card--glass tw:p-8 tw:w-full">
               <div class="tw:flex tw:items-center tw:gap-3 tw:mb-6">
                 <div class="jb-badge jb-badge--primary" style="width: 40px; height: 40px;">
                   <v-icon icon="mdi-account-search-outline" size="20" />
                 </div>
                 <span class="tw:font-semibold tw:text-lg" style="color:#1E1B4B">For Job Seekers</span>
               </div>
-              <v-timeline density="compact" side="end" line-color="primary">
+              <v-timeline class="tw:h-auto" density="compact" side="end" truncate-line="both" line-color="primary">
                 <v-timeline-item
                   v-for="(step, i) in jobSeekerSteps"
                   :key="step.title"
@@ -188,15 +188,15 @@ const employerSteps = [
             </div>
           </v-col>
 
-          <v-col cols="12" md="6">
-            <div class="jb-card jb-card--glass tw:p-8 tw:h-full">
+          <v-col cols="12" md="6" class="tw:flex">
+            <div class="jb-card jb-card--glass tw:p-8 tw:w-full">
               <div class="tw:flex tw:items-center tw:gap-3 tw:mb-6">
                 <div class="jb-badge jb-badge--secondary" style="width: 40px; height: 40px;">
                   <v-icon icon="mdi-domain" size="20" />
                 </div>
                 <span class="tw:font-semibold tw:text-lg" style="color:#1E1B4B">For Employers</span>
               </div>
-              <v-timeline density="compact" side="end" line-color="secondary">
+              <v-timeline class="tw:h-auto" density="compact" side="end" truncate-line="both" line-color="secondary">
                 <v-timeline-item
                   v-for="(step, i) in employerSteps"
                   :key="step.title"

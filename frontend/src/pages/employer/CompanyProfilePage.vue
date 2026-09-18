@@ -21,7 +21,7 @@ const model = ref({
   contactPerson: auth.user?.contactPerson ?? '',
   hrEmail: auth.user?.hrEmail ?? '',
   phoneNumber: auth.user?.phoneNumber ?? '',
-  industryType: auth.user?.industryType ?? '',
+  industryType: auth.user?.industryType ?? null,
   provinceId: auth.user?.provinceId ?? null,
   town: auth.user?.town ?? '',
   streetName: auth.user?.streetName ?? '',
@@ -80,7 +80,7 @@ async function submit() {
       </v-chip>
     </div>
 
-    <div class="jb-card jb-card--glass tw:pa-6 tw:md:pa-7 tw:mb-6">
+    <div class="jb-card jb-card--glass tw:p-6 tw:md:p-7 tw:mb-6">
       <div class="tw:flex tw:items-center tw:gap-3 tw:mb-1">
         <div class="jb-badge jb-badge--secondary" style="width: 36px; height: 36px;">
           <v-icon icon="mdi-account-outline" size="18" />
@@ -97,7 +97,7 @@ async function submit() {
     </v-alert>
 
     <v-form ref="form" @submit.prevent="submit">
-      <div class="jb-card jb-card--glass tw:pa-6 tw:md:pa-7 tw:mb-6">
+      <div class="jb-card jb-card--glass tw:p-6 tw:md:p-7 tw:mb-6">
         <div class="tw:flex tw:items-center tw:gap-3 tw:mb-5">
           <div class="jb-badge jb-badge--primary" style="width: 36px; height: 36px;">
             <v-icon icon="mdi-domain" size="18" />
@@ -140,7 +140,7 @@ async function submit() {
         </v-row>
       </div>
 
-      <div class="jb-card jb-card--glass tw:pa-6 tw:md:pa-7 tw:mb-6">
+      <div class="jb-card jb-card--glass tw:p-6 tw:md:p-7 tw:mb-6">
         <div class="tw:flex tw:items-center tw:gap-3 tw:mb-5">
           <div class="jb-badge jb-badge--secondary" style="width: 36px; height: 36px;">
             <v-icon icon="mdi-map-marker-outline" size="18" />
